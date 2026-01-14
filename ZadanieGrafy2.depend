@@ -1,8 +1,10 @@
 # depslib dependency file v1.0
-1768394479 source:d:\programowanie_1\zadaniegrafy2\main.c
+1768411849 source:d:\programowanie_1\zadaniegrafy2\main.c
 	<stdio.h>
 	<stdlib.h>
-	"json_parser.h"
+	<string.h>
+	"cJSON.h"
+	"parseSrc.h"
 
 1732833617 d:\programowanie_1\c-json\c-json-1.1.0\include\json_parser.h
 	"json_types.h"
@@ -23,4 +25,12 @@
 
 1768395839 d:\programowanie_1\zadaniegrafy2\cjson.h
 	<stddef.h>
+
+1768404326 d:\programowanie_1\zadaniegrafy2\parsesrc.h
+
+1768403401 source:d:\programowanie_1\zadaniegrafy2\parsesrc.c
+	<stdlib.h>
+	<stdio.h>
+	"parseSrc.h"
+	"cJSON.h"
 
