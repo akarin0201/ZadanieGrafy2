@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1768504945 source:d:\programowanie_1\zadaniegrafy2\main.c
+1768509470 source:d:\programowanie_1\zadaniegrafy2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -35,13 +35,13 @@
 	"parseSrc.h"
 	"cJSON.h"
 
-1768505405 source:d:\programowanie_1\zadaniegrafy2\graph.c
+1768509242 source:d:\programowanie_1\zadaniegrafy2\graph.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"graph.h"
 	"cJSON.h"
 
-1768504993 d:\programowanie_1\zadaniegrafy2\graph.h
+1768509462 d:\programowanie_1\zadaniegrafy2\graph.h
 	"cJSON.h"
 

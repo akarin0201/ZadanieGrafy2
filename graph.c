@@ -72,14 +72,6 @@ void clearMap() {
     }
 }
 
-int cj_countVertices(cJSON* json) {
-    cJSON* vertices = cJSON_GetObjectItemCaseSensitive(json, "Vertices");
-    if(!vertices)
-        return 0;
-
-    return cJSON_GetArraySize(vertices);
-}
-
 int cj_mapIdName(cJSON* json) {
     cJSON* vertices = cJSON_GetObjectItemCaseSensitive(json, "Vertices");
     if(!vertices)
@@ -117,10 +109,38 @@ int cj_setAdjArr(cJSON* json, int v, int arr[v][v]) {
         cJSON_ArrayForEach(edge, vertex) {
             int neighbourId = -1;
             if(!mapGet(edge->valuestring, &neighbourId)) return 0;
-            printf("Mapping %s of id %d -> %s of id %d\n", vertex->string, vertexId, edge->valuestring, neighbourId);
+            // printf("Mapping %s of id %d -> %s of id %d\n", vertex->string, vertexId, edge->valuestring, neighbourId);
             arr[vertexId][neighbourId] = 1;
         }
     }
 
     return 1;
+}
+
+int cj_arrayLength(cJSON* json, char* arrayName) {
+    cJSON* arr = cJSON_GetObjectItemCaseSensitive(json, arrayName);
+    if(cJSON_IsArray(arr))
+        return cJSON_GetArraySize(arr);
+
+    return 0;
+}
+
+int cj_getIds(cJSON* json, char* arrayName, int* arr) {
+
+    cJSON* jsonArr = cJSON_GetObjectItemCaseSensitive(json, arrayName);
+    if(cJSON_IsArray(jsonArr)) {
+        cJSON* item = NULL;
+        int c = 0;
+        cJSON_ArrayForEach(item, jsonArr) {
+            int itemId = -1;
+            if(!mapGet(item->valuestring, &itemId)) return 0;
+            // printf("Assigning %s of id %d to index %d in %s array\n", item->valuestring, itemId, c, arrayName);
+            // printf("arr[%d] = %d in %s\n", c, itemId, arrayName);
+            arr[c++] = itemId;
+        }
+
+        return 1;
+    }
+
+    return 0;
 }

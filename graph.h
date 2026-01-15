@@ -53,15 +53,6 @@ void printMap();
 void clearMap();
 
 /**
-    Returns vertices count
-
-    @param cJSON* pointer to a graph in cJSON format
-
-    @return int vertices count
-*/
-int cj_countVertices(cJSON* json);
-
-/**
     Maps names to ids
 
     @param cJSON* pointer to a graph in cJSON format
@@ -79,5 +70,26 @@ int cj_mapIdName(cJSON* json);
     @return bool 0 on failure
 */
 int cj_setAdjArr(cJSON* json, int v, int arr[v][v]);
+
+/**
+    Returns cJSON array length
+
+    @param cJSON* pointer to a graph in cJSON format
+    @param string array name
+
+    @return int vertices count
+*/
+int cj_arrayLength(cJSON* json, char* arrayName);
+
+/**
+    Writes mapped ids to given array
+
+    @param cJSON* pointer to a graph in cJSON format
+    @param string array name
+    @param int* pointer to destination array
+
+    @return bool 0 on failure
+*/
+int cj_getIds(cJSON* json, char* arrayName, int* arr);
 
 #endif // GRAPH_H_INCLUDED
