@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1768509470 source:d:\programowanie_1\zadaniegrafy2\main.c
+1768668133 source:d:\programowanie_1\zadaniegrafy2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"cJSON.h"
 	"parseSrc.h"
 	"graph.h"
+	"solve.h"
 
 1732833617 d:\programowanie_1\c-json\c-json-1.1.0\include\json_parser.h
 	"json_types.h"
@@ -27,21 +28,30 @@
 1768395839 d:\programowanie_1\zadaniegrafy2\cjson.h
 	<stddef.h>
 
-1768404326 d:\programowanie_1\zadaniegrafy2\parsesrc.h
+1768641281 d:\programowanie_1\zadaniegrafy2\parsesrc.h
 
-1768403401 source:d:\programowanie_1\zadaniegrafy2\parsesrc.c
+1768641316 source:d:\programowanie_1\zadaniegrafy2\parsesrc.c
 	<stdlib.h>
 	<stdio.h>
 	"parseSrc.h"
 	"cJSON.h"
 
-1768509242 source:d:\programowanie_1\zadaniegrafy2\graph.c
+1768648209 source:d:\programowanie_1\zadaniegrafy2\graph.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"graph.h"
 	"cJSON.h"
 
-1768509462 d:\programowanie_1\zadaniegrafy2\graph.h
+1768648309 d:\programowanie_1\zadaniegrafy2\graph.h
 	"cJSON.h"
+
+1768668123 source:d:\programowanie_1\zadaniegrafy2\solve.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+	"solve.h"
+
+1768667927 d:\programowanie_1\zadaniegrafy2\solve.h
 

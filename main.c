@@ -4,27 +4,24 @@
 #include "cJSON.h"
 #include "parseSrc.h"
 #include "graph.h"
-
-#define exitWithError() \
-    do { \
-        clearMap(); \
-        cJSON_Delete(jsonObj); \
-        return 1; \
-    } while(0)
+#include "solve.h"
 
 int main()
 {
+    int rc = 0;
     // ****************
     // IMPORT JSON DATA
     // ****************
-    // PREPARE ALTERNATIVE stdin() source !
-    char* source = parseSrc("data/g1.json");
-    cJSON* jsonObj = cJSON_Parse(source);
-    if(!jsonObj) {
-        printf("Failed to parese source string!\n");
-        return 1;
-    }
+    
+    // IMPORT THROUGH FILE
+    // char* source = parseSrc("data/g0.json");
 
+    // IMPORT THROUGH STDIN
+    char* source = parseStdIn();
+
+    // CREATE CJSON STRUCTURE
+    cJSON* jsonObj = cJSON_Parse(source);
+    if(!jsonObj) { rc = 1; goto clean_1; }
 
     // ************
     // PREPARE DATA
@@ -32,50 +29,79 @@ int main()
 
     // GET VERTICES COUNT
     int v = cj_arrayLength(jsonObj, "Vertices");
-    if(!v) exitWithError();
+    if(!v) { rc = 1; goto clean_1; }
 
     // PREPARE I:NAME MAP
-    char names[v][3];
-    if(!cj_mapIdName(jsonObj)) exitWithError();
+    char** names = malloc(v * sizeof(char*));
+    for(int i = 0; i < v; i++) names[i] = malloc(3 * sizeof(char));
+    if(!cj_mapIdName(jsonObj, v, names)) { rc = 1; goto clean_2; }
+    // for(int i = 0; i < v; i++) printf("V: %s ID: %d\n", names[i], i);
 
     // PREPARE ADJACENCY ARRAY
-    int adjArr[v][v];
-    if(!cj_setAdjArr(jsonObj, v, adjArr)) exitWithError();
+    // this can bo optimized for memory alocation, but not now :)
+    int** adjArr = malloc(v * sizeof(int*));
+    for(int i = 0; i < v; i++) {
+        adjArr[i] = malloc(v * sizeof(int));
+        memset(adjArr[i], 0, v * sizeof(int));
+    }
+    if(!cj_setAdjArr(jsonObj, v, adjArr, names)) { rc = 1; goto clean_3; }
+    // for(int i = 0; i < v; i++) {
+    //     printf("[");
+    //     for(int j = 0; j < v; j++) printf("%d,", adjArr[i][j]);
+    //     printf("]\n");
+    // }
 
     // PREPARE INPUT VERTICES ARRAY
     int inputCount = cj_arrayLength(jsonObj, "Input");
-    if(!inputCount) exitWithError();
-    int input[inputCount];
-    if(!cj_getIds(jsonObj, "Input", input)) exitWithError();
+    if(!inputCount) { rc = 1; goto clean_3; }
+    int* input = malloc(inputCount * sizeof(int));
+    if(!cj_getIds(jsonObj, "Input", input, v, names)) { rc = 1; goto clean_4; }
 
     // PREPARE OUTPUT VERTICES ARRAY
     int outputCount = cj_arrayLength(jsonObj, "Output");
-    if(!outputCount) exitWithError();
-    int output[outputCount];
-    if(!cj_getIds(jsonObj, "Output", output)) exitWithError();
+    if(!outputCount) { rc = 1; goto clean_4; }
+    int* output = malloc(outputCount * sizeof(int));
+    if(!cj_getIds(jsonObj, "Output", output, v, names)) { rc = 1; goto clean_5; }
+
+    // PREPARE IDENTITY ARRAY
+    // -1 - input
+    // 0 - internal
+    // 1 - output
+    int* identity = calloc(v, sizeof(int));
+    for(int i = 0; i < inputCount; i++) identity[input[i]] = -1;
+    for(int i = 0; i < outputCount; i++) identity[output[i]] = 1;
 
 
     // ***************
     // CALCULATE PATHS
     // ***************
 
+    printPaths(
+        v,
+        names,
+        adjArr,
+        inputCount,
+        input,
+        outputCount,
+        output,
+        identity
+    );
 
-
-    // **************
-    // PRINT RESOULTS
-    // **************
-
-    // PRINT ADJ ARRAY
-    /*
-    for(int z = 0; z < v; z++) {
-        printf("[");
-        for(int x = 0; x < v; x++) {
-            printf("%d,", adjArr[z][x]);
-        }
-        printf("]\n");
-    }*/
-    
-    clearMap();
+    // ***************
+    // CLEAN UP MEMORY
+    // ***************
+    free(identity);
+clean_5:
+    free(output);
+clean_4:
+    free(input);
+clean_3:
+    for(int i = 0; i < v; i++) free(adjArr[i]);
+    free(adjArr);
+clean_2:
+    for(int i = 0; i < v; i++) free(names[i]);
+    free(names);
+clean_1:
     cJSON_Delete(jsonObj);
     return 0;
 }

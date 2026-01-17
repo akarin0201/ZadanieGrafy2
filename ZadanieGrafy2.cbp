@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cJSON.h" />
+		<Unit filename="graph.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="graph.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -42,6 +46,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="parseSrc.h" />
+		<Unit filename="solve.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="solve.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

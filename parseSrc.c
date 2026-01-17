@@ -34,3 +34,39 @@ char* parseSrc(char* pathToSrc) {
 
     return buffer;
 }
+
+char* parseStdIn() {
+    char* source = NULL;
+    size_t size = 0;
+    size_t len = 0;
+    int c;
+    int braces = 0;
+    int s = 0;
+
+    while((c = getchar()) != EOF) {
+
+        if(!s) {
+            if(c == '{') {
+                s = 1;
+                braces = 1;
+            }
+        }
+        else {
+            if(c == '{') braces++;
+            if(c == '}') braces--;
+        }
+
+        if(len + 1 >= size) {
+            size = size ? size * 2 : 1024;
+            source = realloc(source, size);
+            if(!source) return 1;
+        }
+        source[len++] = (char)c;
+
+        if(s && braces == 0) break;
+    }
+
+    source[len] = '\0';
+
+    return source;
+}
