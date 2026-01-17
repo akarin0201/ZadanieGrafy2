@@ -6,18 +6,58 @@
 #include "graph.h"
 #include "solve.h"
 
-int main()
+int main(int argc, char* argv[])
 {
+    // *************
+    // DECLARE FLAGS
+    // *************
+    int inputFile = 0;
+    char* filename = NULL;
     int rc = 0;
+
+    // ***************
+    // SERVE ARGUMENTS
+    // ***************
+    for(int i = 1; i < argc; i++) {
+        if(strcmp(argv[i], "-h") == 0) {
+            printf("Standard input: provide input in json structure after launch, press enter to get the result\nInput from file: -f path/to/filename.json\nHelp: -h\n");
+            return 0;
+        }
+        else if(strcmp(argv[i], "-f") == 0) {
+            if(i + 1 < argc) {
+                inputFile = 1;
+                filename = argv[i+1];
+                i++;
+            }
+            else {
+                fprintf(stderr, "-f requires filename! Correct usage: ZadanieGrafy2.exe -f path/to/filename.json");
+                return 1;
+            }
+        }
+        else {
+            fprintf(stderr, "Unrecognized argument %s! Use: ZadanieGrafy2.exe -h for help", argv[i]);
+            return 1;
+        }
+    }
+
     // ****************
     // IMPORT JSON DATA
     // ****************
-    
+
     // IMPORT THROUGH FILE
     // char* source = parseSrc("data/g0.json");
 
     // IMPORT THROUGH STDIN
-    char* source = parseStdIn();
+    // char* source = parseStdIn();
+
+    char* source = NULL;
+
+    if(inputFile)
+        source = parseSrc(filename);
+    else
+        source = parseStdIn();
+
+    if(!source) return 1;
 
     // CREATE CJSON STRUCTURE
     cJSON* jsonObj = cJSON_Parse(source);
