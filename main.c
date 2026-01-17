@@ -11,6 +11,7 @@ int main(int argc, char* argv[])
     // *************
     // DECLARE FLAGS
     // *************
+    int debug = 0;
     int inputFile = 0;
     char* filename = NULL;
     int rc = 0;
@@ -20,8 +21,11 @@ int main(int argc, char* argv[])
     // ***************
     for(int i = 1; i < argc; i++) {
         if(strcmp(argv[i], "-h") == 0) {
-            printf("Standard input: provide input in json structure after launch, press enter to get the result\nInput from file: -f path/to/filename.json\nHelp: -h\n");
+            printf("Standard input: provide input in json structure after launch, press enter to get the result\nInput from file: -f path/to/filename.json\nHelp: -h\nDebug: -d\n");
             return 0;
+        }
+        else if(strcmp(argv[i], "-d") == 0) {
+            debug = 1;
         }
         else if(strcmp(argv[i], "-f") == 0) {
             if(i + 1 < argc) {
@@ -75,7 +79,11 @@ int main(int argc, char* argv[])
     char** names = malloc(v * sizeof(char*));
     for(int i = 0; i < v; i++) names[i] = malloc(3 * sizeof(char));
     if(!cj_mapIdName(jsonObj, v, names)) { rc = 1; goto clean_2; }
-    // for(int i = 0; i < v; i++) printf("V: %s ID: %d\n", names[i], i);
+
+    if(debug) {
+        printf("Name -> Id map:\n");
+        for(int i = 0; i < v; i++) printf("V: %s ID: %d\n", names[i], i);
+    }
 
     // PREPARE ADJACENCY ARRAY
     // this can bo optimized for memory alocation, but not now :)
@@ -85,11 +93,16 @@ int main(int argc, char* argv[])
         memset(adjArr[i], 0, v * sizeof(int));
     }
     if(!cj_setAdjArr(jsonObj, v, adjArr, names)) { rc = 1; goto clean_3; }
-    // for(int i = 0; i < v; i++) {
-    //     printf("[");
-    //     for(int j = 0; j < v; j++) printf("%d,", adjArr[i][j]);
-    //     printf("]\n");
-    // }
+
+    if(debug) {
+        printf("Adjacency array:\n");
+        for(int i = 0; i < v; i++) {
+            printf("[");
+            for(int j = 0; j < v; j++) printf("%d,", adjArr[i][j]);
+            printf("]\n");
+        }
+    }
+    
 
     // PREPARE INPUT VERTICES ARRAY
     int inputCount = cj_arrayLength(jsonObj, "Input");
@@ -124,7 +137,8 @@ int main(int argc, char* argv[])
         input,
         outputCount,
         output,
-        identity
+        identity,
+        debug
     );
 
     // ***************

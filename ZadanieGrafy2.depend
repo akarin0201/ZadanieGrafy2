@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1768668133 source:d:\programowanie_1\zadaniegrafy2\main.c
+1768671157 source:d:\programowanie_1\zadaniegrafy2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -53,5 +53,5 @@
 	<limits.h>
 	"solve.h"
 
-1768667927 d:\programowanie_1\zadaniegrafy2\solve.h
+1768670752 d:\programowanie_1\zadaniegrafy2\solve.h
 

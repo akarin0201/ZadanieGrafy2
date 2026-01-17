@@ -119,7 +119,7 @@ void dfs(int v, int** adjArr, unsigned int* visited, int bpw, int current) {
     }
 }
 
-void printPaths(int v, char** map, int** adjArr, int inC, int* in, int outC, int* out, int* identity) {
+void printPaths(int v, char** map, int** adjArr, int inC, int* in, int outC, int* out, int* identity, int debug) {
     
     // ****************
     // DATA PREPARATION
@@ -215,38 +215,33 @@ void printPaths(int v, char** map, int** adjArr, int inC, int* in, int outC, int
         }
     }
 
-    // printf("Supersets:\n[");
-    // for(int i = 0; i < coverC; i++) printf("%d,", superSets[i]);
-    // printf("]\n");
+    if(debug) {
+        printf("All masks:\n");
+        for(int i = 0; i < coverC; i++) {
+            printf("%d:", i);
+            mPrint(mWords, mBPW, v, coverMasks[i]);
+        }
 
-    // printf("All masks:\n");
-    // for(int i = 0; i < coverC; i++) {
-    //     // if(superSets[i] == 1) {
-    //         printf("%d:", i);
-    //         mPrint(mWords, mBPW, v, coverMasks[i]);
-    //     // }
-    // }
+        printf("Non empty masks:\n");
+        for(int i = 0; i < coverC; i++) {
+            if(nonEmptySets[i] == 1) {
+                printf("%d:", i);
+                mPrint(mWords, mBPW, v, coverMasks[i]);
+            }
+        }
 
-    // printf("Non empty masks:\n");
-    // for(int i = 0; i < coverC; i++) {
-    //     if(nonEmptySets[i] == 1) {
-    //         printf("%d:", i);
-    //         mPrint(mWords, mBPW, v, coverMasks[i]);
-    //     }
-    // }
-
-    // printf("Subsets:\n");
-    // for(int i = 0; i < coverC; i++) {
-    //     if(subSets[i] == 1) {
-    //         printf("%d:", i);
-    //         mPrint(mWords, mBPW, v, coverMasks[i]);
-    //     }
-    // }
+        printf("Subsets (ommiting empty masks):\n");
+        for(int i = 0; i < coverC; i++) {
+            if(subSets[i] == 1 && nonEmptySets[i] == 1) {
+                printf("%d:", i);
+                mPrint(mWords, mBPW, v, coverMasks[i]);
+            }
+        }
+    }
 
     // PREPARE DESIRED COVERAGE MASK
     unsigned int* fullCoverMask = calloc(mWords, sizeof(unsigned int));
     for(int i = 0; i < v; i++) if(identity[i] == 0) mSetBit(mBPW, fullCoverMask, i);
-    // mPrint(mWords, mBPW, v, fullCoverMask);
 
 
     // ************
@@ -278,18 +273,19 @@ void printPaths(int v, char** map, int** adjArr, int inC, int* in, int outC, int
         }
     }
 
-    // printf("Min moves: %d\n", minMoves);
-    // printf("Selected masks: %d\n", minMoves);
-    // for(int i = 0; i < coverC; i++) {
-    //     if(results[i] == 1) {
-    //         mPrint(mWords, mBPW, v, coverMasks[i]);
-    //     }
-    // }
-    // printf("Result:\n");
-    // mPrint(mWords, mBPW, v, currentCover);
-    
-    // mPrint(mWords, mBPW, v, fullCoverMask);
-    // printf("Selected pairs:\n");
+    if(debug) {
+        printf("Steps to solve: %d\n", minMoves);
+        printf("Selected masks:\n");
+        for(int i = 0; i < coverC; i++) {
+            if(results[i] == 1) {
+                mPrint(mWords, mBPW, v, coverMasks[i]);
+            }
+        }
+
+        printf("Sum to desired cover comparison:\n");
+        mPrint(mWords, mBPW, v, currentCover);
+        mPrint(mWords, mBPW, v, fullCoverMask);
+    }
     printf("{ ");
     for(int i = 0; i < coverC; i++) {
         if(results[i] == 1) {

@@ -12,6 +12,7 @@
     @param int amount of output vertices
     @param int* output vertices ids array
     @param int* verterx identity array
+    @param bool debug flag
 */
 void printPaths(
     int v,
@@ -21,7 +22,8 @@ void printPaths(
     int* in,
     int outC,
     int* out,
-    int* identity
+    int* identity,
+    int debug
 );
 
 #endif // SOLVE_H_INCLUDED
